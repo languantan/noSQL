@@ -1,0 +1,42 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="838" measuredH="573" mockupW="282" mockupH="573">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::iPhone" x="556" y="0" w="-1" h="-1" measuredW="282" measuredH="573" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <model>IPhone5</model>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Button" x="738" y="118" w="54" h="22" measuredW="48" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Payment%26bm%3BPayment.bmml%26bm%3BPayment.bmml%26bm%3BPayment.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22182%2C118%2C236%2C140%22%20href%3D%22Payment.bmml%22%20alt%3D%22Payment%22%20id%3D%221%22/%3E</map>
+        <size>16</size>
+        <text>Pay</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="674" y="461" w="46" h="22" measuredW="46" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>Camera%26bm%3BCamera.bmml%26bm%3BCamera.bmml%26bm%3BCamera.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22118%2C461%2C164%2C483%22%20href%3D%22Camera.bmml%22%20alt%3D%22Camera%22%20id%3D%223%22/%3E</map>
+        <text>-------</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="__group__" x="598" y="161" w="194" h="70" measuredW="194" measuredH="70" zOrder="3" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="194" h="70" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="4"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="140" y="23" w="-1" h="-1" measuredW="44" measuredH="24" zOrder="1" locked="false" isInGroup="4">
+          <controlProperties>
+            <size>16</size>
+            <text>%249.23</text>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Icon" x="10" y="10" w="-1" h="-1" measuredW="48" measuredH="48" zOrder="2" locked="false" isInGroup="4"/>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="598" y="117" w="-1" h="-1" measuredW="106" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Shopping%20Cart</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

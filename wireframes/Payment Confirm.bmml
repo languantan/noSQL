@@ -1,0 +1,76 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="838" measuredH="573" mockupW="282" mockupH="573">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::iPhone" x="556" y="0" w="-1" h="-1" measuredW="282" measuredH="573" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <model>IPhone5</model>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Label" x="598" y="117" w="-1" h="-1" measuredW="26" measuredH="24" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Pay</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="684" y="141" w="-1" h="-1" measuredW="112" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>limpeh@sg.com</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Icon" x="720" y="117" w="-1" h="-1" measuredW="24" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <icon>DollarIcon%7Csmall</icon>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="748" y="117" w="-1" h="-1" measuredW="48" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Paypal</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="__group__" x="598" y="175" w="194" h="70" measuredW="194" measuredH="70" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties/>
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="194" h="70" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="8"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="140" y="23" w="-1" h="-1" measuredW="44" measuredH="24" zOrder="1" locked="false" isInGroup="8">
+          <controlProperties>
+            <size>16</size>
+            <text>%243.40</text>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Icon" x="10" y="10" w="-1" h="-1" measuredW="48" measuredH="48" zOrder="2" locked="false" isInGroup="8"/>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="9" controlTypeID="__group__" x="598" y="260" w="194" h="70" measuredW="194" measuredH="70" zOrder="6" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="194" h="70" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="9"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="140" y="23" w="-1" h="-1" measuredW="44" measuredH="24" zOrder="1" locked="false" isInGroup="9">
+          <controlProperties>
+            <size>16</size>
+            <text>%249.23</text>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Icon" x="10" y="10" w="-1" h="-1" measuredW="48" measuredH="48" zOrder="2" locked="false" isInGroup="9"/>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Button" x="654" y="442" w="-1" h="-1" measuredW="86" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>18</size>
+        <text>Confirm</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::HRule" x="640" y="344" w="-1" h="-1" measuredW="100" measuredH="10" zOrder="8" locked="false" isInGroup="-1"/>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Label" x="600" y="358" w="-1" h="-1" measuredW="44" measuredH="24" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Total%3A%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Label" x="738" y="358" w="-1" h="-1" measuredW="44" measuredH="24" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>%2411.63</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
