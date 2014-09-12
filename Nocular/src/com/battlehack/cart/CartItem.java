@@ -1,4 +1,4 @@
-package com.battlehack;
+package com.battlehack.cart;
 
 public class CartItem {
   private Product product;
