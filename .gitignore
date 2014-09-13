@@ -2,3 +2,6 @@
 *.DS_Store
 Nocular/bin
 Nocular/gen
+SlidingPanelLibrary/bin
+build.gradle
+SlidingPanelLibrary/gen

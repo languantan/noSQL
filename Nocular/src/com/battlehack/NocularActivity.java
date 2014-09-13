@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.battlehack.cart.Product;
@@ -107,12 +105,18 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		mMainLayout.setPanelHeight(500);
 		
 		Product product = new Product(cleanedBarcode);
-
-		TextView txtProductName = (TextView) findViewById(R.id.product_name);
+		
+		ListView shoppingList = (ListView)findViewById(R.id.shopping_list);
+		String[] names = new String[] {"Coke", "Sprite", "Herbal Tea"};
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.shopping_item, R.id.item_name, names);
+		shoppingList.setAdapter(adapter);
+		
+		/*TextView txtProductName = (TextView) findViewById(R.id.product_name);
 		txtProductName.setText(product.name());
 
 		ImageView imageProduct = (ImageView) findViewById(R.id.product_image);
-		imageProduct.setImageResource(product.image());
+		imageProduct.setImageResource(product.image());*/
 
 		mBarcodePicker.pauseScanning();
 
