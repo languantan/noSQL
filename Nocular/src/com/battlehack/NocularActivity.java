@@ -1,18 +1,29 @@
 package com.battlehack;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
@@ -34,7 +45,13 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  * @see SystemUiHider
  */
 public class NocularActivity extends Activity implements ScanditSDKListener {
-
+	//NFC
+	NfcAdapter mAdapter;
+	PendingIntent mPendingIntent;
+	IntentFilter mFilters[];
+	public static final String MIME_TEXT_PLAIN = "text/plain";
+	private String STORE_NAME = "NONE";
+	
 	// private Button mButton;
 	private ScanditSDK mBarcodePicker;
 	private SlidingUpPanelLayout mMainLayout;
@@ -51,12 +68,43 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mHelper = new CartDBOpenHelper(this);
+		
+		checkNFCTag();
 
 		initializeAndStartBarcodeScanning();
 	}
 	
+	public void checkNFCTag() {
+		mAdapter = NfcAdapter.getDefaultAdapter(this);
+	    mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+	    IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+	    try{
+	        ndef.addDataType("text/plain");
+	    }catch(MalformedMimeTypeException e){
+	        throw new RuntimeException("FAILED", e);
+	    }
+	    Intent intent = getIntent();
+	    getNdefMessages(intent);
+	}
+	
+	public void getNdefMessages(Intent intent){
+		String action = intent.getAction();
+	    if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+	        String type = intent.getType();
+	        if (MIME_TEXT_PLAIN.equals(type)) {
+	            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+	            new NdefReaderTask().execute(tag);
+	             
+	        } else {
+	            Log.d("NOC", "Wrong mime type: " + type);
+	        }
+	    }
+	}
+	
 	public void OnClickChoosePaymentMethod(View v) {
 		Intent intent = new Intent(this, PaymentMethodPageActivity.class);
+		intent.putExtra("STORE", STORE_NAME);
+		intent.putExtra("TOTAL", 12.25);
 		startActivity(intent);
 	}
 
@@ -147,8 +195,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		 * imageProduct.setImageResource(product.image());
 		 */
 
-		
-
 	}
 
 	/**
@@ -214,5 +260,44 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		updateListView();
 	}
 	
+	//Reads NDEF Tag
+	private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
+		 
+	    @Override
+	    protected String doInBackground(Tag... params) {
+	        Tag tag = params[0];
+	        Ndef ndef = Ndef.get(tag);
+	        if (ndef == null) {
+	            return null;
+	        }
+	        NdefMessage ndefMessage = ndef.getCachedNdefMessage();	 
+	        NdefRecord[] records = ndefMessage.getRecords();
+	        for (NdefRecord ndefRecord : records) {
+	            if (ndefRecord.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(ndefRecord.getType(), NdefRecord.RTD_TEXT)) {
+	                try {
+	                    return readText(ndefRecord);
+	                } catch (UnsupportedEncodingException e) {
+	                    Log.e("NOC", "Unsupported Encoding", e);
+	                }
+	            }
+	        }
+	        return null;
+	    }
+	    
+	    private String readText(NdefRecord record) throws UnsupportedEncodingException {
+	        byte[] payload = record.getPayload();
+	        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+	        int languageCodeLength = payload[0] & 0063;	         
+	        return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+	    }
+	     
+	    @Override
+	    protected void onPostExecute(String result) {
+	        if (result != null) {
+	        	STORE_NAME = result;
+	        	Toast.makeText(getApplicationContext(), "You are currently in: " + result, Toast.LENGTH_SHORT).show();
+	        }
+	    }
+	}
 	
 }

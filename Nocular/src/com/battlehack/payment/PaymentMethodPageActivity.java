@@ -29,7 +29,8 @@ public class PaymentMethodPageActivity extends Activity {
 	private static final String CONFIG_CLIENT_ID = "AWmIMhDw_Mzxplky70GIajE9GmO_tNS2x_GUiVxljWFDaNbW-n2C7mrNj9sM";
 	private static final String CONFIG_CLIENT_SECRET = "ENCzdhA2bGRbCu7OA3_wGzKgZXzglzyWP8Zo-62jrB1Ejg5uGhQWCyVXi";
 
-	private static String STORE_NAME = "XYZ Store";
+	private static String STORE_NAME = "XYZ NOCULAR";
+	private double TOTAL = 0;
 	private static int REQUEST_CODE = 100;
 	private boolean txnComplete = false;
 	
@@ -39,7 +40,7 @@ public class PaymentMethodPageActivity extends Activity {
 			.environment(CONFIG_ENVIRONMENT)
 			.clientId(CONFIG_CLIENT_ID)
 			// The following are only used in PayPalFuturePaymentActivity.
-			.merchantName("XYZ Store")
+			.merchantName("XYZ NOCULAR")
 			.merchantPrivacyPolicyUri(
 					Uri.parse("https://www.example.com/privacy"))
 			.merchantUserAgreementUri(
@@ -53,10 +54,13 @@ public class PaymentMethodPageActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_payment_method_page);
 		
+		TOTAL = getIntent().getDoubleExtra("TOTAL", 0.0);
+		STORE_NAME = getIntent().getStringExtra("STORE");
+		
 		tv = (TextView) findViewById(R.id.tv_pay_storename);
 
 		setUpPayPalService();
-		startUpPayPalService(12.23);
+		startUpPayPalService(TOTAL);
 	}
 
 	public void setUpPayPalService() {
@@ -77,10 +81,6 @@ public class PaymentMethodPageActivity extends Activity {
 			double total) {
 		return new PayPalPayment(new BigDecimal(total), "SGD", STORE_NAME,
 				paymentIntent);
-	}
-	
-	private void setStoreName(String storename) {
-		tv.setText(storename);
 	}
 	
 	@Override
