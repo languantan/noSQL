@@ -51,13 +51,13 @@ public class Product {
 			this.name = "Coca-Cola";
 			this.description = "Enjoy the classic taste of Coke. Enjoyed over a billion times everyday!";
 			this.price = 0.90;
-			this.image = R.drawable.coke_small;
+			this.image = R.drawable.coke_round;
 			break;
 		case "8888589338835":
 			this.name = "Jia Jia Heritage Herbal Tea";
 			this.description = "Brewed from 11 all natural herbs; cooling with a sweet, soothing taste; no preservatives";
 			this.price = 0.70;
-			this.image = R.drawable.jiajia_small;
+			this.image = R.drawable.jiajia_round;
 			break;
 		case "8888200700294":
 			this.name = "F&N Seasons Ice Lemon Tea";
@@ -69,7 +69,7 @@ public class Product {
 			this.name = "Lay's Sour Cream & Onion Potato Chips";
 			this.description = "Lay's Sour Cream & Onion Potato Chips are naturally delicious! It all starts with farm grown potatoes, cooked in all natural oil with a dash of salt so every chip is perfectly crispy and tasty. Then we add the tang of sour cream and mild onions. They have no artificial flavors, no preservatives, no MSG, and 0 g of trans fat.";
 			this.price = 0.70;
-			this.image = R.drawable.layssourcream_small;
+			this.image = R.drawable.layssourcream_round;
 			break;
 		case "028400019934":
 			this.name = "Ruffles Original";
@@ -81,7 +81,7 @@ public class Product {
 			this.name = "Kronenbourg 1664 Original Beer";
 			this.description = "Award winning pale lager; with a warm golden colour, floral aroma and perfectly balanced sweetness";
 			this.price = 3.80;
-			this.image = R.drawable.kronenbourg_small;
+			this.image = R.drawable.kronenbourg_round;
 			break;
 
 		default:
