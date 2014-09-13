@@ -1,7 +1,5 @@
 package com.battlehack.util;
 
-import java.util.logging.Logger;
-
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +15,7 @@ public class SwipeyHelper implements OnTouchListener {
 	}
 
 	private static final int MIN_DISTANCE = 100;
+	private static final int MIN_VERTICAL_DISTANCE = 5;
 	private float downX, downY, upX, upY;
 	private Action mSwipeDetected = Action.NONE;
 
@@ -28,12 +27,14 @@ public class SwipeyHelper implements OnTouchListener {
 			downX = event.getX();
 			downY = event.getY();
 			mSwipeDetected = Action.NONE;
+			Log.i("SWIPEY", "ON DOWN: " + downY);
 			return false; // allow other events like Click to be processed
 		}
 
 		case MotionEvent.ACTION_MOVE: {
 			upX = event.getX();
 			upY = event.getY();
+			Log.i("SWIPEY", "ON MOVE: " + upY);
 
 			float deltaX = downX - upX;
 			float deltaY = downY - upY;
@@ -50,7 +51,7 @@ public class SwipeyHelper implements OnTouchListener {
 					return true;
 				}
 			} else {
-				if (Math.abs(deltaY) > MIN_DISTANCE) {
+				if (Math.abs(deltaY) > MIN_VERTICAL_DISTANCE) {
 					// top or down
 					if (deltaY < 0) {
 						Log.i("SWIPEY", "Swipe Top to Bottom");

@@ -238,7 +238,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 		startManagingCursor(mDbCursor);
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
-		CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
+		final CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
 		shoppingList.setAdapter(mAdapter);
 		
 		//Set up stuff
@@ -247,14 +247,13 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		shoppingList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
 				if(swiper.swipeDetected()) {
 		            if(swiper.getAction() == Action.RIGHTLEFT) {
-		            	Toast.makeText(getApplicationContext(), "TO THE LEFT!", Toast.LENGTH_SHORT).show();
+		            	Toast.makeText(getApplicationContext(), pos + "TO THE LEFT!", Toast.LENGTH_SHORT).show();
 		            } else if(swiper.getAction() == Action.LEFTRIGHT){
-		            	Toast.makeText(getApplicationContext(), "TO THE RIGHT!", Toast.LENGTH_SHORT).show();
+		            	Toast.makeText(getApplicationContext(), pos + "TO THE RIGHT!", Toast.LENGTH_SHORT).show();
 		            }
 		        }  
 			}
@@ -272,7 +271,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	
 	private void removeItem(String name, boolean deleteAll){
 		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
-		
 		
 		writeDB.rawQuery( "DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME
 				+ "WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
