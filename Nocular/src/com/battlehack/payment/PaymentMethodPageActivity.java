@@ -8,10 +8,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.battlehack.R;
@@ -29,6 +31,9 @@ public class PaymentMethodPageActivity extends Activity {
 
 	private static String STORE_NAME = "XYZ Store";
 	private static int REQUEST_CODE = 100;
+	private boolean txnComplete = false;
+	
+	private TextView tv;
 
 	private static PayPalConfiguration config = new PayPalConfiguration()
 			.environment(CONFIG_ENVIRONMENT)
@@ -47,6 +52,8 @@ public class PaymentMethodPageActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_payment_method_page);
+		
+		tv = (TextView) findViewById(R.id.tv_pay_storename);
 
 		setUpPayPalService();
 		startUpPayPalService(12.23);
@@ -72,6 +79,18 @@ public class PaymentMethodPageActivity extends Activity {
 				paymentIntent);
 	}
 	
+	private void setStoreName(String storename) {
+		tv.setText(storename);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(!txnComplete) {
+			finish();
+		}
+	}
+	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
@@ -81,6 +100,7 @@ public class PaymentMethodPageActivity extends Activity {
                 	try {
 						String tmp = confirm.getPayment().toJSONObject().toString(4);
 	                	Toast.makeText(getApplicationContext(), tmp, Toast.LENGTH_LONG).show();
+	                	txnComplete = true;
 					} catch (JSONException e) {
 	                	Toast.makeText(getApplicationContext(), "GG", Toast.LENGTH_LONG).show();
 					}
