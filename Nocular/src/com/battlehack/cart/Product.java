@@ -62,6 +62,7 @@ public class Product {
 			this.price = 0.80;
 			this.image = R.drawable.lemontea_small;
 			break;
+
 		default:
 			this.name = "Unrecognized Product";
 			this.description = "This product has not been registered on our system.";
