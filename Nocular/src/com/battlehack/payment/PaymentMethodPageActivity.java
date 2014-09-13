@@ -23,8 +23,9 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 public class PaymentMethodPageActivity extends Activity {
 	// Testing credentials
-	private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
-	private static final String CONFIG_CLIENT_ID = "credential from developer.paypal.com";
+	private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+	private static final String CONFIG_CLIENT_ID = "AWmIMhDw_Mzxplky70GIajE9GmO_tNS2x_GUiVxljWFDaNbW-n2C7mrNj9sM";
+	private static final String CONFIG_CLIENT_SECRET = "ENCzdhA2bGRbCu7OA3_wGzKgZXzglzyWP8Zo-62jrB1Ejg5uGhQWCyVXi";
 
 	private static String STORE_NAME = "XYZ Store";
 	private static int REQUEST_CODE = 100;
