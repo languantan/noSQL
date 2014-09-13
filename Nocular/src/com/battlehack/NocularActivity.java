@@ -240,8 +240,10 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	private void updateListView() {
 		SQLiteDatabase db = mHelper.getReadableDatabase();
 		mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "
-				+ CartDBOpenHelper.PRODUCT_QUANTITY + ", MAX("
-				+ CartDBOpenHelper.TIMESTAMP + ")" + " FROM "
+				+ CartDBOpenHelper.PRODUCT_QUANTITY 
+				+ ", MAX(" + CartDBOpenHelper.TIMESTAMP + ")"
+				+ ", SUM(" + CartDBOpenHelper.ITEM_PRICE + ") AS " + CartDBOpenHelper.SUBTOTAL_PRICE
+				+ " FROM "
 				+ CartDBOpenHelper.CART_TABLE_NAME + " GROUP BY "
 				+ CartDBOpenHelper.PRODUCT_NAME + " ORDER BY "
 				+ CartDBOpenHelper.TIMESTAMP + " DESC", null);
@@ -273,9 +275,10 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 					@Override
 					public void onDismiss(ListView listView,
-							int[] reverseSortedPositions) {
+							int[] reverseSortedPositions, boolean dismissRight) {
 						mDbCursor = new CursorWithDelete(mDbCursor, reverseSortedPositions[0]);
 						mAdapter.swapCursor(mDbCursor);
+						Toast.makeText(NocularActivity.this, dismissRight ? "Dismissed Right" : "Dismissed Left", Toast.LENGTH_SHORT).show();
 					}
 				});
 		shoppingList.setOnTouchListener(touchListener);

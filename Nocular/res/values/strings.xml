@@ -2,10 +2,8 @@
 <resources>
 
     <string name="app_name">Nocular</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_payment_method_page">PaymentMethodPageActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="format_price">&#36;%1$.2f</string>
     <string name="action_settings">Settings</string>
 
 </resources>

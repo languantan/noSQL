@@ -41,6 +41,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 	private int mDownPosition;
 	private View mDownView;
 	private boolean mPaused;
+	private boolean dismissRight = false;
 
 	/**
 	 * The callback interface used by {@link SwipeDismissListViewTouchListener}
@@ -63,7 +64,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 		 *            An array of positions to dismiss, sorted in descending
 		 *            order for convenience.
 		 */
-		void onDismiss(ListView listView, int[] reverseSortedPositions);
+		void onDismiss(ListView listView, int[] reverseSortedPositions, boolean dismissRight);
 	}
 
 	/**
@@ -200,7 +201,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 			float absVelocityX = Math.abs(velocityX);
 			float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
 			boolean dismiss = false;
-			boolean dismissRight = false;
+			
 			if (Math.abs(deltaX) > mViewWidth / 2 && mSwiping) {
 				dismiss = true;
 				dismissRight = deltaX > 0;
@@ -320,7 +321,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 					for (int i = mPendingDismisses.size() - 1; i >= 0; i--) {
 						dismissPositions[i] = mPendingDismisses.get(i).position;
 					}
-					mCallbacks.onDismiss(mListView, dismissPositions);
+					mCallbacks.onDismiss(mListView, dismissPositions, dismissRight);
 
 					// Reset mDownPosition to avoid MotionEvent.ACTION_UP trying
 					// to start a dismiss

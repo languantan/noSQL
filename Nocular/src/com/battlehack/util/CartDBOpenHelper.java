@@ -14,6 +14,7 @@ public class CartDBOpenHelper extends SQLiteOpenHelper {
 	public static final String PRODUCT_NAME = "name";
 	public static final String PRODUCT_IMAGE = "image";
 	public static final String ITEM_PRICE = "item_price";
+	public static final String SUBTOTAL_PRICE = "subtotal";
 	
 	//FOR COUNT(*) AS Property
 	public static final String PRODUCT_QUANTITY = "quantity";
