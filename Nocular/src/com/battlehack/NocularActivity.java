@@ -1,7 +1,10 @@
 package com.battlehack;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.battlehack.cart.Product;
+import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.SystemUiHider;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
@@ -26,6 +30,8 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 	// private Button mButton;
 	private ScanditSDK mBarcodePicker;
+	private SlidingUpPanelLayout mMainLayout;
+	private Cursor mDbCursor;
 
 	private String MyScanditSdkAppKey = "LtvvEDljEeSA45lnMKZSeyWIOk73l0WRPd5GKOUHg3M";
 
@@ -34,6 +40,8 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		initializeAndStartBarcodeScanning();
 	}
 
@@ -67,12 +75,11 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 		// Add both views to activity, with the scan GUI on top.
 
-		final SlidingUpPanelLayout mainFrame = (SlidingUpPanelLayout) getLayoutInflater()
+		mMainLayout = (SlidingUpPanelLayout) getLayoutInflater()
 				.inflate(R.layout.activity_nocular, null);
-
 		LayoutParams pickerParams = new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
-		mainFrame.addView(picker, pickerParams);
+		mMainLayout.addView(picker, pickerParams);
 
 		mBarcodePicker = picker;
 
@@ -81,9 +88,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// (e.g. a successfully scanned bar code).
 		mBarcodePicker.getOverlayView().addListener(this);
 
-		getLayoutInflater().inflate(R.layout.frame_sliding, mainFrame);
+		getLayoutInflater().inflate(R.layout.frame_sliding, mMainLayout);
 
-		setContentView(mainFrame);
+		setContentView(mMainLayout);
 	}
 
 	public void didScanBarcode(String barcode, String symbology) {
@@ -97,6 +104,8 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 			}
 		}
 
+		mMainLayout.setPanelHeight(500);
+		
 		Product product = new Product(cleanedBarcode);
 
 		TextView txtProductName = (TextView) findViewById(R.id.product_name);
@@ -154,5 +163,29 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	public void onBackPressed() {
 		mBarcodePicker.stopScanning();
 		finish();
+	}
+	
+	private void updateListView() {
+		CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		mDbCursor = db.query(CartDBOpenHelper.CART_TABLE_NAME, null,
+				null, null, null, null, null);
+
+		startManagingCursor(mDbCursor);
+
+//		String[] from = { CartDBOpenHelper.TIMESTAMP,
+//				CartDBOpenHelper.LATITUDE, CartDBOpenHelper.LONGITUDE, CartDBOpenHelper.DISTANCE };
+//
+//		int[] to = { R.id.timestamp, R.id.latitude, R.id.longitude, R.id.distance };
+//
+//		mAdapter = new SimpleCursorAdapter(this, R.layout.location, mDbCursor,
+//				from, to, 0) {
+//			@Override
+//			public void setViewText(TextView v, String text) {
+//				super.setViewText(v, doubleFormat(v, text));
+//			}
+//		};
+//
+//		mLocationLog.setAdapter(mAdapter);
 	}
 }
