@@ -34,7 +34,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		initializeAndStartBarcodeScanning();
 	}
 
@@ -83,7 +82,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		mBarcodePicker.getOverlayView().addListener(this);
 
 		getLayoutInflater().inflate(R.layout.frame_sliding, mainFrame);
-		// mainFrame.addView(slidingFrame);
 
 		setContentView(mainFrame);
 	}
