@@ -34,8 +34,19 @@
 	    
     <ListView
         android:id="@+id/shopping_list"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@id/cart_label"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cart_label" />
+    
+    <Button 
+        android:id="@+id/btn_pay"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="PAY"
+        android:onClick="OnClickChoosePaymentMethod"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/shopping_list" />
+    
+    
 
 </RelativeLayout>
