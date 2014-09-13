@@ -59,6 +59,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	// private Button mButton;
 	private ScanditSDK mBarcodePicker;
 	private SlidingUpPanelLayout mMainLayout;
+	private int panelExpandedHeight;
+	private int labelHeight;
+	private int productHeight;
 	
 	private Cursor mDbCursor;
 	private CartDBOpenHelper mHelper;
@@ -158,6 +161,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		getLayoutInflater().inflate(R.layout.frame_sliding, mMainLayout);
 
 		setContentView(mMainLayout);
+		panelExpandedHeight = findViewById(R.id.sliding_panel).getLayoutParams().height;
+		labelHeight = findViewById(R.id.cart_label).getLayoutParams().height;
+		mMainLayout.setPanelHeight(labelHeight);
 	}
 
 	public void didScanBarcode(String barcode, String symbology) {
@@ -171,34 +177,19 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 			}
 		}
 		
-
-		mMainLayout.setPanelHeight(500);
 		addToCart(cleanedBarcode);
+		
+		float ratio =  productHeight / (float) panelExpandedHeight; 
+		mMainLayout.expandPanel(ratio);
+		
 		new Handler().postDelayed(new Runnable() {
 			
 			@Override
 			public void run() {
-				mMainLayout.setPanelHeight(100);;
+				mMainLayout.collapsePanel();
 				
 			}
 		}, 2000);
-
-//		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
-//		String[] names = new String[] { "Coke", "Sprite", "Herbal Tea" };
-//
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//				R.layout.shopping_item, R.id.item_name, names);
-//		shoppingList.setAdapter(adapter);
-
-		/*
-		 * TextView txtProductName = (TextView) findViewById(R.id.product_name);
-		 * txtProductName.setText(product.name());
-		 * 
-		 * ImageView imageProduct = (ImageView)
-		 * findViewById(R.id.product_image);
-		 * imageProduct.setImageResource(product.image());
-		 */
-
 	}
 
 	/**
