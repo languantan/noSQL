@@ -1,10 +1,11 @@
 package com.battlehack;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,7 +15,9 @@ import android.widget.Toast;
 
 import com.battlehack.cart.Product;
 import com.battlehack.util.CartDBOpenHelper;
+import com.battlehack.util.PaymentHelper;
 import com.battlehack.util.SystemUiHider;
+import com.braintreepayments.api.dropin.BraintreePaymentActivity;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
@@ -43,6 +46,15 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		initializeAndStartBarcodeScanning();
+		
+//		Intent intent = new Intent(this, PaymentPageActivity.class);
+//		startActivity(intent);
+	}
+	
+	public void OnPaymentButtonClick(View v) {
+        Intent intent = new Intent(this, BraintreePaymentActivity.class);
+        intent.putExtra(BraintreePaymentActivity.EXTRA_CLIENT_TOKEN, PaymentHelper.clientToken);
+        startActivityForResult(intent, PaymentHelper.REQUEST_CODE);
 	}
 
 	@Override

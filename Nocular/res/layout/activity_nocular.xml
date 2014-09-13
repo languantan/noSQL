@@ -6,6 +6,4 @@
     android:gravity="bottom"
     sothree:panelHeight="50dp"
     sothree:shadowHeight="0dp" >
-    
-
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

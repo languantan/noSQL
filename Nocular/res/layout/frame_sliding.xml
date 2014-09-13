@@ -1,18 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="500dp" 
+    android:layout_height="500dp"
     android:background="#000"
     android:orientation="vertical" >
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/shopping_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
         android:layout_alignParentTop="true"
-        android:textSize="20sp"
+        android:gravity="right"
+        android:text="Shopping Cart"
         android:textColor="#fff"
-        android:text="Shopping Cart" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/product_name"
@@ -27,5 +27,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_name" />
+
+    <Button
+        android:id="@+id/btn_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="32dp"
+        android:onClick="OnPaymentButtonClick"
+        android:text="Pay" />
 
 </RelativeLayout>
