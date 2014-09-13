@@ -18,12 +18,13 @@ import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ import com.battlehack.cart.Product;
 import com.battlehack.payment.PaymentMethodPageActivity;
 import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.ShoppingListCursorAdapter;
+import com.battlehack.util.SwipeyHelper;
+import com.battlehack.util.SwipeyHelper.Action;
 import com.battlehack.util.SystemUiHider;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
@@ -237,6 +240,25 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 		CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
 		shoppingList.setAdapter(mAdapter);
+		
+		//Set up stuff
+		final SwipeyHelper swiper = new SwipeyHelper();
+		shoppingList.setOnTouchListener(swiper);
+		shoppingList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				if(swiper.swipeDetected()) {
+		            if(swiper.getAction() == Action.RIGHTLEFT) {
+		            	Toast.makeText(getApplicationContext(), "TO THE LEFT!", Toast.LENGTH_SHORT).show();
+		            } else if(swiper.getAction() == Action.LEFTRIGHT){
+		            	Toast.makeText(getApplicationContext(), "TO THE RIGHT!", Toast.LENGTH_SHORT).show();
+		            }
+		        }  
+			}
+		});
 	}
 
 	private void addToCart(String barcode) {
