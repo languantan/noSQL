@@ -1,13 +1,17 @@
 package com.battlehack;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.CursorAdapter;
+import android.text.style.UpdateLayout;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
@@ -32,7 +36,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	// private Button mButton;
 	private ScanditSDK mBarcodePicker;
 	private SlidingUpPanelLayout mMainLayout;
+	
 	private Cursor mDbCursor;
+	private CartDBOpenHelper mHelper;
 
 	private String MyScanditSdkAppKey = "LtvvEDljEeSA45lnMKZSeyWIOk73l0WRPd5GKOUHg3M";
 
@@ -42,6 +48,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		mHelper = new CartDBOpenHelper(this);
 
 		initializeAndStartBarcodeScanning();
 	}
@@ -104,14 +111,15 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				cleanedBarcode += barcode.charAt(i);
 			}
 		}
+		
 
-		mMainLayout.expandPanel((float)0.2);
+		mMainLayout.setPanelHeight(500);
 		addToCart(cleanedBarcode);
 		new Handler().postDelayed(new Runnable() {
 			
 			@Override
 			public void run() {
-				mMainLayout.collapsePanel();
+				mMainLayout.setPanelHeight(100);;
 				
 			}
 		}, 2000);
@@ -164,26 +172,40 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	}
 
 	private void updateListView() {
-		CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		mDbCursor = db.query(CartDBOpenHelper.CART_TABLE_NAME, null, null,
-				null, null, null, null, null);
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "+ CartDBOpenHelper.PRODUCT_QUANTITY
+				+ ", MAX(" + CartDBOpenHelper.TIMESTAMP + ")"
+				+ " FROM " + CartDBOpenHelper.CART_TABLE_NAME
+				+ " GROUP BY " + CartDBOpenHelper.PRODUCT_NAME
+				+ " ORDER BY " + CartDBOpenHelper.TIMESTAMP + " DESC"
+				, null);
 
 		startManagingCursor(mDbCursor);
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
-
 		CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
 		shoppingList.setAdapter(mAdapter);
 	}
 
 	private void addToCart(String barcode) {
-		Product product = new Product(barcode);
+		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
 		
-		CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
-		SQLiteDatabase writeDB = dbHelper.getWritableDatabase();
-
+		Product product = new Product(barcode);
 		writeDB.insert(CartDBOpenHelper.CART_TABLE_NAME, null, product.getContentValues());
 		writeDB.close();
 		updateListView();
 	}
+	
+	private void removeItem(String name, boolean deleteAll){
+		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
+		
+		
+		writeDB.rawQuery( "DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME
+				+ "WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
+				+ "LIMIT 1"
+				, new String[]{name});
+		writeDB.close();
+		updateListView();
+	}
+	
+	
 }

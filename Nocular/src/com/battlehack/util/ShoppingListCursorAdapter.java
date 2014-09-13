@@ -24,14 +24,17 @@ public class ShoppingListCursorAdapter extends CursorAdapter {
 	public void bindView(View v, Context context, Cursor c) {
 		TextView name = (TextView) v.findViewById(R.id.item_name);
 		ImageView image = (ImageView) v.findViewById(R.id.product_image);
+		TextView quantity = (TextView) v.findViewById(R.id.item_qty);
 		// TODO: price
-		// TextView price = (TextView) v.findViewById(R.id.item_price);
-		// TODO: quantity
-		// TextView quantity = (TextView) v.findViewById(R.id.item_quantity);
-		
-		name.setText(c.getString(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
-		image.setImageResource(c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
+		// TextView price = (TextView) v.findViewById(R.id.item_price)
 
+		String productName = c.getString(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME));
+		int productImage = c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_IMAGE));
+		int quantityAmt = c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_QUANTITY));
+		
+		name.setText(productName);
+		image.setImageResource(productImage);
+		quantity.setText(quantityAmt+"");
 	}
 
 	@Override
