@@ -18,6 +18,7 @@ import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.BaseColumns;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.View;
@@ -245,15 +246,14 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		final SwipeyHelper swiper = new SwipeyHelper();
 		shoppingList.setOnTouchListener(swiper);
 		shoppingList.setOnItemClickListener(new OnItemClickListener() {
-
+			
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
 				if(swiper.swipeDetected()) {
-		            if(swiper.getAction() == Action.RIGHTLEFT) {
-		            	Toast.makeText(getApplicationContext(), pos + "TO THE LEFT!", Toast.LENGTH_SHORT).show();
-		            } else if(swiper.getAction() == Action.LEFTRIGHT){
-		            	Toast.makeText(getApplicationContext(), pos + "TO THE RIGHT!", Toast.LENGTH_SHORT).show();
+		            if(swiper.getAction() == Action.LEFTRIGHT) {
+						mDbCursor.moveToPosition(pos);
+						removeItem(mDbCursor.getInt(mDbCursor.getColumnIndex(BaseColumns._ID)),false);
 		            }
 		        }  
 			}
@@ -269,13 +269,19 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		updateListView();
 	}
 	
-	private void removeItem(String name, boolean deleteAll){
+	private void removeItem(int id, boolean deleteAll){
 		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
-		
-		writeDB.rawQuery( "DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME
-				+ "WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
-				+ "LIMIT 1"
-				, new String[]{name});
+		writeDB.execSQL("DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME + " WHERE " + BaseColumns._ID + "= ? ", new String[]{""+id});
+//		Cursor c = writeDB.rawQuery( "SELECT * FROM " + CartDBOpenHelper.CART_TABLE_NAME
+//				+ " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
+//				, new String[]{name});
+//		if(c.moveToFirst()) {
+//			Log.i("NOC A", c.getString(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
+//		}
+//		writeDB.delete(CartDBOpenHelper.CART_TABLE_NAME, CartDBOpenHelper.PRODUCT_NAME+"=?", new String[]{name});
+//		writeDB.rawQuery( "DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME
+//				+ " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
+//				, new String[]{name});
 		writeDB.close();
 		updateListView();
 	}

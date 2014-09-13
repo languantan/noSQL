@@ -27,26 +27,22 @@ public class SwipeyHelper implements OnTouchListener {
 			downX = event.getX();
 			downY = event.getY();
 			mSwipeDetected = Action.NONE;
-			Log.i("SWIPEY", "ON DOWN: " + downY);
 			return false; // allow other events like Click to be processed
 		}
 
 		case MotionEvent.ACTION_MOVE: {
 			upX = event.getX();
 			upY = event.getY();
-			Log.i("SWIPEY", "ON MOVE: " + upY);
 
 			float deltaX = downX - upX;
 			float deltaY = downY - upY;
 			if (Math.abs(deltaX) > MIN_DISTANCE) {
 				// left or right
 				if (deltaX < 0) {
-					Log.i("SWIPEY", "Swipe Left to Right");
 					mSwipeDetected = Action.LEFTRIGHT;
 					return true;
 				}
 				if (deltaX > 0) {
-					Log.i("SWIPEY", "Swipe Right to Left");
 					mSwipeDetected = Action.RIGHTLEFT;
 					return true;
 				}
@@ -54,12 +50,10 @@ public class SwipeyHelper implements OnTouchListener {
 				if (Math.abs(deltaY) > MIN_VERTICAL_DISTANCE) {
 					// top or down
 					if (deltaY < 0) {
-						Log.i("SWIPEY", "Swipe Top to Bottom");
 						mSwipeDetected = Action.TOPDOWN;
 						return false;
 					}
 					if (deltaY > 0) {
-						Log.i("SWIPEY", "Swipe Bottom to Top");
 						mSwipeDetected = Action.BOTTOMUP;
 						return false;
 					}
