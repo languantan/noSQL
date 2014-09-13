@@ -9,8 +9,32 @@
     tools:context="com.battlehack.PaymentMethodPageActivity" >
 
     <TextView
+        android:id="@+id/tv_pay_thanks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="Thank you for shopping at "
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tv_pay_storename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_pay_thanks"
+        android:layout_centerHorizontal="true"
+        android:text="XYZ"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tv_pay_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_pay_storename"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="IDK we can put something vaguely informative here."
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
