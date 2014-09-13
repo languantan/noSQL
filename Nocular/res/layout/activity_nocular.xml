@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     sothree:panelHeight="50dp"
-    sothree:shadowHeight="0dp" >
+    sothree:shadowHeight="0dp"
+    sothree:overlay="true" >
     
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
