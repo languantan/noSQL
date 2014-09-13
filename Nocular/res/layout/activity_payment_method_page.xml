@@ -7,17 +7,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.battlehack.PaymentMethodPageActivity" >
-	<ImageView
-	    android:id="@+id/img_thanks_icon"
-	    android:layout_width="200dp"
-	    android:layout_height="200dp"
-	    android:layout_centerHorizontal="true"
-        android:layout_topVertical="true"
-	    android:gravity="center"
-	    android:contentDescription="Thank you icon"
-        android:src="@drawable/acknowledgement_page" 
-	    />
-    
     
     <TextView
         android:id="@+id/tv_pay_thanks"
