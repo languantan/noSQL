@@ -253,7 +253,10 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				if(swiper.swipeDetected()) {
 		            if(swiper.getAction() == Action.LEFTRIGHT) {
 						mDbCursor.moveToPosition(pos);
-						removeItem(mDbCursor.getInt(mDbCursor.getColumnIndex(BaseColumns._ID)),false);
+						removeItem(mDbCursor.getInt(mDbCursor.getColumnIndex(BaseColumns._ID)));
+		            } else if (swiper.getAction() == Action.RIGHTLEFT) {
+						mDbCursor.moveToPosition(pos);
+						removeItem(mDbCursor.getString(mDbCursor.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));		            	
 		            }
 		        }  
 			}
@@ -269,19 +272,16 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		updateListView();
 	}
 	
-	private void removeItem(int id, boolean deleteAll){
+	private void removeItem(int id){
 		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
 		writeDB.execSQL("DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME + " WHERE " + BaseColumns._ID + "= ? ", new String[]{""+id});
-//		Cursor c = writeDB.rawQuery( "SELECT * FROM " + CartDBOpenHelper.CART_TABLE_NAME
-//				+ " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
-//				, new String[]{name});
-//		if(c.moveToFirst()) {
-//			Log.i("NOC A", c.getString(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
-//		}
-//		writeDB.delete(CartDBOpenHelper.CART_TABLE_NAME, CartDBOpenHelper.PRODUCT_NAME+"=?", new String[]{name});
-//		writeDB.rawQuery( "DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME
-//				+ " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "=?"
-//				, new String[]{name});
+		writeDB.close();
+		updateListView();
+	}
+	
+	private void removeItem(String name){
+		SQLiteDatabase writeDB = mHelper.getWritableDatabase();
+		writeDB.execSQL("DELETE FROM " + CartDBOpenHelper.CART_TABLE_NAME + " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "= ? ", new String[]{name});
 		writeDB.close();
 		updateListView();
 	}
