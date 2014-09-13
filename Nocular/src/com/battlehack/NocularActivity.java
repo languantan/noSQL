@@ -2,14 +2,9 @@ package com.battlehack;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +14,7 @@ import com.battlehack.util.SystemUiHider;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -72,7 +68,13 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 		// Add both views to activity, with the scan GUI on top.
 
-		setContentView(picker);
+		final SlidingUpPanelLayout mainFrame = (SlidingUpPanelLayout) getLayoutInflater()
+				.inflate(R.layout.activity_nocular, null);
+
+		LayoutParams pickerParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		mainFrame.addView(picker, pickerParams);
+
 		mBarcodePicker = picker;
 
 		mBarcodePicker.getOverlayView().setBeepEnabled(false);
@@ -80,11 +82,10 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// (e.g. a successfully scanned bar code).
 		mBarcodePicker.getOverlayView().addListener(this);
 
-		// Set all settings according to the settings activity. Normally there
-		// will be no settings
-		// activity for the picker and you just hardcode the setting your app
-		// needs.
-		// SettingsActivity.setSettingsForPicker(this, mBarcodePicker);
+		getLayoutInflater().inflate(R.layout.frame_sliding, mainFrame);
+		// mainFrame.addView(slidingFrame);
+
+		setContentView(mainFrame);
 	}
 
 	public void didScanBarcode(String barcode, String symbology) {
@@ -100,29 +101,22 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 		Product product = new Product(cleanedBarcode);
 
-		final FrameLayout productInfo = (FrameLayout) getLayoutInflater().inflate(
-				R.layout.activity_nocular, null);
-		TextView txtProductName = (TextView) productInfo
-				.findViewById(R.id.product_name);
+		TextView txtProductName = (TextView) findViewById(R.id.product_name);
 		txtProductName.setText(product.name());
 
-		ImageView imageProduct = (ImageView) productInfo
-				.findViewById(R.id.product_image);
+		ImageView imageProduct = (ImageView) findViewById(R.id.product_image);
 		imageProduct.setImageResource(product.image());
 
 		mBarcodePicker.pauseScanning();
-		((RelativeLayout) mBarcodePicker).addView(productInfo,
-				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
-		productInfo.setBackgroundColor(0x20000000);
-		productInfo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mBarcodePicker.resumeScanning();
-				((RelativeLayout) mBarcodePicker).removeView(productInfo);
-				
-			}
-		});
+		// productInfo.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// mBarcodePicker.resumeScanning();
+		// ((RelativeLayout) mBarcodePicker).removeView(productInfo);
+		//
+		// }
+		// });
 
 		// Example code that would typically be used in a real-world app using
 		// the Scandit SDK.
