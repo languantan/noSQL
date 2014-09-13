@@ -1,7 +1,10 @@
 package com.battlehack.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,12 @@ import com.battlehack.R;
 public class ShoppingListCursorAdapter extends CursorAdapter {
 
 	LayoutInflater mLayoutInflater;
+	Resources res;
 
 	public ShoppingListCursorAdapter(Context context, Cursor c) {
 		super(context, c, 0);
 		mLayoutInflater = LayoutInflater.from(context);
+		res = context.getResources();
 	}
 
 	@Override
@@ -33,8 +38,12 @@ public class ShoppingListCursorAdapter extends CursorAdapter {
 		int quantityAmt = c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_QUANTITY));
 		
 		name.setText(productName);
-		image.setImageResource(productImage);
+//		image.setImageResource(productImage);
 		quantity.setText(quantityAmt+"");
+		
+		final Bitmap bitmap = BitmapFactory.decodeResource(res, productImage);
+	    final Rounder drawable = new Rounder(res, bitmap);
+	    image.setImageDrawable(drawable);
 	}
 
 	@Override
