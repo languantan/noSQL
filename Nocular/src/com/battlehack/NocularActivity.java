@@ -38,7 +38,6 @@ import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.ShoppingListCursorAdapter;
 import com.battlehack.util.SwipeyHelper;
 import com.battlehack.util.SwipeyHelper.Action;
-import com.battlehack.util.SystemUiHider;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
@@ -122,7 +121,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// When the activity is in the background immediately stop the
 		// scanning to save resources and free the camera.
 		mBarcodePicker.stopScanning();
-
+		stopManagingCursor(mDbCursor);
 		super.onPause();
 	}
 
