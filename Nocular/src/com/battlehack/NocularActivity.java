@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.CursorAdapter;
+import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.battlehack.cart.Product;
 import com.battlehack.util.CartDBOpenHelper;
+import com.battlehack.util.ShoppingListCursorAdapter;
 import com.battlehack.util.SystemUiHider;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
@@ -39,7 +42,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		initializeAndStartBarcodeScanning();
 	}
 
@@ -73,8 +76,8 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 		// Add both views to activity, with the scan GUI on top.
 
-		mMainLayout = (SlidingUpPanelLayout) getLayoutInflater()
-				.inflate(R.layout.activity_nocular, null);
+		mMainLayout = (SlidingUpPanelLayout) getLayoutInflater().inflate(
+				R.layout.activity_nocular, null);
 		LayoutParams pickerParams = new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
 		mMainLayout.addView(picker, pickerParams);
@@ -102,44 +105,35 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 			}
 		}
 
-		mMainLayout.setPanelHeight(500);
-		
-		Product product = new Product(cleanedBarcode);
-		
-		ListView shoppingList = (ListView)findViewById(R.id.shopping_list);
-		String[] names = new String[] {"Coke", "Sprite", "Herbal Tea"};
-		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.shopping_item, R.id.item_name, names);
-		shoppingList.setAdapter(adapter);
-		
-		/*TextView txtProductName = (TextView) findViewById(R.id.product_name);
-		txtProductName.setText(product.name());
+		mMainLayout.expandPanel((float)0.2);
+		addToCart(cleanedBarcode);
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				mMainLayout.collapsePanel();
+				
+			}
+		}, 2000);
 
-		ImageView imageProduct = (ImageView) findViewById(R.id.product_image);
-		imageProduct.setImageResource(product.image());*/
+//		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
+//		String[] names = new String[] { "Coke", "Sprite", "Herbal Tea" };
+//
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//				R.layout.shopping_item, R.id.item_name, names);
+//		shoppingList.setAdapter(adapter);
 
-		mBarcodePicker.pauseScanning();
-
-		// productInfo.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// mBarcodePicker.resumeScanning();
-		// ((RelativeLayout) mBarcodePicker).removeView(productInfo);
-		//
-		// }
-		// });
-
-		// Example code that would typically be used in a real-world app using
-		// the Scandit SDK.
 		/*
-		 * // Access the image in which the bar code has been recognized. byte[]
-		 * imageDataNV21Encoded =
-		 * barcodePicker.getCameraPreviewImageOfFirstBarcodeRecognition(); int
-		 * imageWidth = barcodePicker.getCameraPreviewImageWidth(); int
-		 * imageHeight = barcodePicker.getCameraPreviewImageHeight();
+		 * TextView txtProductName = (TextView) findViewById(R.id.product_name);
+		 * txtProductName.setText(product.name());
 		 * 
-		 * // Stop recognition to save resources. mBarcodePicker.stopScanning();
+		 * ImageView imageProduct = (ImageView)
+		 * findViewById(R.id.product_image);
+		 * imageProduct.setImageResource(product.image());
 		 */
+
+		
+
 	}
 
 	/**
@@ -168,28 +162,28 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		mBarcodePicker.stopScanning();
 		finish();
 	}
-	
+
 	private void updateListView() {
 		CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		mDbCursor = db.query(CartDBOpenHelper.CART_TABLE_NAME, null,
+		mDbCursor = db.query(CartDBOpenHelper.CART_TABLE_NAME, null, null,
 				null, null, null, null, null);
 
 		startManagingCursor(mDbCursor);
+		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 
-//		String[] from = { CartDBOpenHelper.TIMESTAMP,
-//				CartDBOpenHelper.LATITUDE, CartDBOpenHelper.LONGITUDE, CartDBOpenHelper.DISTANCE };
-//
-//		int[] to = { R.id.timestamp, R.id.latitude, R.id.longitude, R.id.distance };
-//
-//		mAdapter = new SimpleCursorAdapter(this, R.layout.location, mDbCursor,
-//				from, to, 0) {
-//			@Override
-//			public void setViewText(TextView v, String text) {
-//				super.setViewText(v, doubleFormat(v, text));
-//			}
-//		};
-//
-//		mLocationLog.setAdapter(mAdapter);
+		CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
+		shoppingList.setAdapter(mAdapter);
+	}
+
+	private void addToCart(String barcode) {
+		Product product = new Product(barcode);
+		
+		CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
+		SQLiteDatabase writeDB = dbHelper.getWritableDatabase();
+
+		writeDB.insert(CartDBOpenHelper.CART_TABLE_NAME, null, product.getContentValues());
+		writeDB.close();
+		updateListView();
 	}
 }

@@ -1,6 +1,9 @@
 package com.battlehack.cart;
 
+import android.content.ContentValues;
+
 import com.battlehack.R;
+import com.battlehack.util.CartDBOpenHelper;
 
 public class Product {
 
@@ -91,6 +94,16 @@ public class Product {
 		return image;
 	}
 
+	public ContentValues getContentValues(){
+		ContentValues data = new ContentValues();
+		
+		data.put(CartDBOpenHelper.PRODUCT_NAME, name);
+		data.put(CartDBOpenHelper.PRODUCT_IMAGE, image);
+		data.put(CartDBOpenHelper.ITEM_PRICE, price);
+		
+		return data;
+	}
+	
 	@Override
 	public String toString() {
 		return "[" + this.barcode + "] " + this.name + ": " + this.price;

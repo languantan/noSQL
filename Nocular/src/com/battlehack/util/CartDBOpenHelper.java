@@ -12,15 +12,18 @@ public class CartDBOpenHelper extends SQLiteOpenHelper {
 	public static final String CART_TABLE_NAME = "shoppingcart";
 	public static final String TIMESTAMP = "timestamp";
 	public static final String PRODUCT_NAME = "name";
-	public static final String PRODUCT_QUANTITY = "quantity";
+	public static final String PRODUCT_IMAGE = "image";
 	public static final String ITEM_PRICE = "item_price";
+	
+	//FOR COUNT(*) AS Property
+	public static final String PRODUCT_QUANTITY = "quantity";
 	
 	private static final String CART_TABLE_CREATE = "CREATE TABLE "
 			+ CART_TABLE_NAME + " (" 
 			+ BaseColumns._ID + " INTEGER PRIMARY KEY,"
 			+ TIMESTAMP + " DATETIME DEFAULT (datetime('now', 'localtime')), "
 			+ PRODUCT_NAME + " TEXT, "
-			+ PRODUCT_QUANTITY + " INTEGER, "
+			+ PRODUCT_IMAGE + " INTEGER, "
 			+ ITEM_PRICE + " REAL);";
 
 	public CartDBOpenHelper(Context context) {
