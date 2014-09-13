@@ -3,12 +3,13 @@ package com.battlehack;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.CursorAdapter;
-import android.text.style.UpdateLayout;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.battlehack.cart.Product;
+import com.battlehack.payment.PaymentMethodPageActivity;
 import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.ShoppingListCursorAdapter;
 import com.battlehack.util.SystemUiHider;
@@ -51,6 +53,11 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		mHelper = new CartDBOpenHelper(this);
 
 		initializeAndStartBarcodeScanning();
+	}
+	
+	public void OnClickChoosePaymentMethod(View v) {
+		Intent intent = new Intent(this, PaymentMethodPageActivity.class);
+		startActivity(intent);
 	}
 
 	@Override

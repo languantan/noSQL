@@ -5,3 +5,4 @@ Nocular/gen
 SlidingPanelLibrary/bin
 build.gradle
 SlidingPanelLibrary/gen
+*.properties
