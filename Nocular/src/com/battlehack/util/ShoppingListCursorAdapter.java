@@ -30,20 +30,25 @@ public class ShoppingListCursorAdapter extends CursorAdapter {
 		TextView name = (TextView) v.findViewById(R.id.item_name);
 		ImageView image = (ImageView) v.findViewById(R.id.product_image);
 		TextView quantity = (TextView) v.findViewById(R.id.item_qty);
-		// TODO: price
-		// TextView price = (TextView) v.findViewById(R.id.item_price)
+		TextView price = (TextView) v.findViewById(R.id.item_price);
 
-		String productName = c.getString(c.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME));
-		int productImage = c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_IMAGE));
-		int quantityAmt = c.getInt(c.getColumnIndex(CartDBOpenHelper.PRODUCT_QUANTITY));
-		
+		String productName = c.getString(c
+				.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME));
+		int productImage = c.getInt(c
+				.getColumnIndex(CartDBOpenHelper.PRODUCT_IMAGE));
+		int quantityAmt = c.getInt(c
+				.getColumnIndex(CartDBOpenHelper.PRODUCT_QUANTITY));
+
+		Double subtotal = c.getDouble(c
+				.getColumnIndex(CartDBOpenHelper.SUBTOTAL_PRICE));
+
 		name.setText(productName);
-//		image.setImageResource(productImage);
-		quantity.setText(quantityAmt+"");
-		
+		quantity.setText(quantityAmt + "");
+		price.setText(context.getString(R.string.format_price, subtotal));
+
 		final Bitmap bitmap = BitmapFactory.decodeResource(res, productImage);
-	    final Rounder drawable = new Rounder(res, bitmap);
-	    image.setImageDrawable(drawable);
+		final Rounder drawable = new Rounder(res, bitmap);
+		image.setImageDrawable(drawable);
 	}
 
 	@Override
