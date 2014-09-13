@@ -240,10 +240,10 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	private void updateListView() {
 		SQLiteDatabase db = mHelper.getReadableDatabase();
 		mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "
-				+ CartDBOpenHelper.PRODUCT_QUANTITY 
-				+ ", MAX(" + CartDBOpenHelper.TIMESTAMP + ")"
-				+ ", SUM(" + CartDBOpenHelper.ITEM_PRICE + ") AS " + CartDBOpenHelper.SUBTOTAL_PRICE
-				+ " FROM "
+				+ CartDBOpenHelper.PRODUCT_QUANTITY + ", MAX("
+				+ CartDBOpenHelper.TIMESTAMP + ")" + ", SUM("
+				+ CartDBOpenHelper.ITEM_PRICE + ") AS "
+				+ CartDBOpenHelper.SUBTOTAL_PRICE + " FROM "
 				+ CartDBOpenHelper.CART_TABLE_NAME + " GROUP BY "
 				+ CartDBOpenHelper.PRODUCT_NAME + " ORDER BY "
 				+ CartDBOpenHelper.TIMESTAMP + " DESC", null);
@@ -267,7 +267,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(
 				shoppingList,
 				new SwipeDismissListViewTouchListener.DismissCallbacks() {
-					
+
 					@Override
 					public boolean canDismiss(int position) {
 						return true;
@@ -276,9 +276,24 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 					@Override
 					public void onDismiss(ListView listView,
 							int[] reverseSortedPositions, boolean dismissRight) {
-						mDbCursor = new CursorWithDelete(mDbCursor, reverseSortedPositions[0]);
+						int singlePosition = reverseSortedPositions[0];
+						Log.d("NocularActivity", "" + singlePosition);
+
+						if (dismissRight) {
+							mDbCursor.moveToPosition(singlePosition);
+							removeItem(mDbCursor.getInt(mDbCursor
+									.getColumnIndex(BaseColumns._ID)));
+						} else {
+							mDbCursor.moveToPosition(singlePosition);
+							removeItem(mDbCursor.getString(mDbCursor
+									.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
+
+						}
+						
+						mDbCursor = new CursorWithDelete(mDbCursor,
+								singlePosition);
 						mAdapter.swapCursor(mDbCursor);
-						Toast.makeText(NocularActivity.this, dismissRight ? "Dismissed Right" : "Dismissed Left", Toast.LENGTH_SHORT).show();
+
 					}
 				});
 		shoppingList.setOnTouchListener(touchListener);
@@ -286,26 +301,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// ListView scrolling,
 		// we don't look for swipes.
 		shoppingList.setOnScrollListener(touchListener.makeScrollListener());
-
-		// //Set up stuff
-		// final SwipeyHelper swiper = new SwipeyHelper();
-		// shoppingList.setOnTouchListener(swiper);
-		// shoppingList.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View view, int pos,
-		// long id) {
-		// if(swiper.swipeDetected()) {
-		// if(swiper.getAction() == Action.LEFTRIGHT) {
-		// mDbCursor.moveToPosition(pos);
-		// removeItem(mDbCursor.getInt(mDbCursor.getColumnIndex(BaseColumns._ID)));
-		// } else if (swiper.getAction() == Action.RIGHTLEFT) {
-		// mDbCursor.moveToPosition(pos);
-		// removeItem(mDbCursor.getString(mDbCursor.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
-		// }
-		// }
-		// }
-		// });
 	}
 
 	private void addToCart(String barcode) {
@@ -324,7 +319,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				+ " WHERE " + BaseColumns._ID + "= ? ",
 				new String[] { "" + id });
 		writeDB.close();
-		updateListView();
 	}
 
 	private void removeItem(String name) {
@@ -333,7 +327,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				+ " WHERE " + CartDBOpenHelper.PRODUCT_NAME + "= ? ",
 				new String[] { name });
 		writeDB.close();
-		updateListView();
 	}
 
 	// Reads NDEF Tag
@@ -407,7 +400,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		public int getCount() {
 			return cursor.getCount() - 1;
 		}
-		
+
 		@Override
 		public long getLong(int column) {
 			return 0;
