@@ -3,36 +3,52 @@
     android:layout_height="500dp"
     android:orientation="vertical" >
 
+    
     <LinearLayout
         android:id="@+id/cart_label"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:paddingLeft="20dp"
-       	android:paddingRight="20dp"
-        android:orientation="horizontal"
-        android:background="@drawable/cart_tab" >
-               
-        <TextView
-            android:id="@+id/cart_label_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:text="Shopping Cart"
-            android:textColor="@color/dark_gray"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/total_price_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="$12.23"
-            android:textColor="@color/dark_gray"
-            android:textSize="20sp" />
-    </LinearLayout>
-        
+        android:background="#80000000"
+        android:orientation="vertical"
+        >
+        <View
+            android:background="@drawable/cart_tab"
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+        />
+    
+	    <LinearLayout
+	        android:id="@+id/label_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="60dp"
+	        android:paddingLeft="20dp"
+	       	android:paddingRight="20dp"
+	        android:orientation="horizontal"
+	        android:background="@color/background" >
+	               
+	        <TextView
+	            android:id="@+id/cart_label_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="left|center_vertical"
+	            android:text="Shopping Cart"
+	            android:textColor="@color/medium_gray"
+	            android:textSize="20sp" />
+	
+	        <TextView
+	            android:id="@+id/total_price_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="right|center_vertical"
+	            android:text="$12.23"
+	            android:textColor="@color/dark_gray"
+	            android:textSize="20sp" />
+	    </LinearLayout>
+    </LinearLayout>    
 	<LinearLayout
         android:id="@+id/items_area"
         android:orientation="vertical"
