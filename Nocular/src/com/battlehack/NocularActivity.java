@@ -20,7 +20,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.support.v4.widget.CursorAdapter;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -164,6 +166,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		panelExpandedHeight = findViewById(R.id.sliding_panel).getLayoutParams().height;
 		labelHeight = findViewById(R.id.cart_label).getLayoutParams().height;
 		mMainLayout.setPanelHeight(labelHeight);
+		
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+	    productHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, metrics);
 	}
 
 	public void didScanBarcode(String barcode, String symbology) {
@@ -250,6 +255,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		
 		startManagingCursor(mDbCursor);
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
+		
 		final CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
 		shoppingList.setAdapter(mAdapter);
 		

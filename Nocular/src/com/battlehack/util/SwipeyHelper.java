@@ -1,6 +1,5 @@
 package com.battlehack.util;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
