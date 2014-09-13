@@ -17,9 +17,11 @@ import com.battlehack.cart.Product;
 import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.PaymentHelper;
 import com.battlehack.util.SystemUiHider;
+import com.braintreepayments.api.Braintree;
 import com.braintreepayments.api.dropin.BraintreePaymentActivity;
 import com.braintreepayments.api.dropin.Customization;
 import com.braintreepayments.api.dropin.Customization.CustomizationBuilder;
+import com.braintreepayments.api.dropin.view.PaymentButton;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
@@ -51,6 +53,18 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		
 //		Intent intent = new Intent(this, PaymentPageActivity.class);
 //		startActivity(intent);
+	}
+	
+	public void SetUpBraintree() {
+		Braintree braintree = Braintree.getInstance(this, PaymentHelper.clientToken);
+		braintree.addListener(new Braintree.PaymentMethodNonceListener() {
+		    public void onPaymentMethodNonce(String paymentMethodNonce) {
+		    	Toast.makeText(getApplicationContext(), "COMMUNICATE YOUR PAYMENT NONCE", Toast.LENGTH_SHORT).show();
+		    }
+		});
+		
+		PaymentButton paymentButton = (PaymentButton) findViewById(R.id.payment_button);
+		paymentButton.initialize(this, braintree);
 	}
 	
 	public void OnPaymentButtonClick(View v) {
