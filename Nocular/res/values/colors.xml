@@ -1,5 +1,10 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="background">#FFAEAE</color>
+    <color name="accent">#BE3C00</color>
+    <color name="light_gray">#BABABA</color>
+    <color name="medium_gray">#9E9E9E</color>
+    <color name="dark_gray">#666666</color>
 
 </resources>

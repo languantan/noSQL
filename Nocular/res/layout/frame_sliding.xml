@@ -1,52 +1,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="500dp" 
-    android:background="#000"
+    android:layout_height="500dp"
     android:orientation="vertical" >
-    
-    <LinearLayout 
-    android:id="@+id/cart_label"
-    android:layout_width="match_parent"
-    android:layout_height="80dp" 
-    android:background="#000">
-    
-	    <TextView 
-	        android:id="@+id/cart_label_text"
-	        android:layout_width="0dp"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0.5"
-	        android:gravity="left|center_vertical"
-	        android:textSize="20sp"
-	        android:textColor="#fff"
-	        android:text="Shopping Cart" />
-	    
-	    <TextView 
-	        android:id="@+id/total_price_text"
-	        android:layout_width="0dp"
-	        android:layout_height="match_parent"
-	       	android:layout_weight="0.5"
-	        android:gravity="right|center_vertical"
-	        android:textSize="20sp"
-	        android:textColor="#fff"
-	        android:text="$12.23"
-	        />
-	   </LinearLayout>    
-	    
-    <ListView
-        android:id="@+id/shopping_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cart_label" />
-    
-    <Button 
-        android:id="@+id/btn_pay"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="PAY"
-        android:onClick="OnClickChoosePaymentMethod"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/shopping_list" />
-    
-    
 
+    <LinearLayout
+        android:id="@+id/cart_label"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingLeft="20dp"
+       	android:paddingRight="20dp"
+        android:orientation="horizontal"
+        android:background="@drawable/cart_tab" >
+               
+        <TextView
+            android:id="@+id/cart_label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="Shopping Cart"
+            android:textColor="@color/dark_gray"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/total_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="$12.23"
+            android:textColor="@color/dark_gray"
+            android:textSize="20sp" />
+    </LinearLayout>
+        
+	<LinearLayout
+        android:id="@+id/items_area"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+    	android:background="@color/background"
+    	android:layout_below="@id/cart_label">
+    	
+	    <ListView
+	        android:id="@+id/shopping_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        />
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="bottom"
+	        android:orientation="vertical"
+	        android:padding="10dp" >
+	       <View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:gravity="top"
+				android:layout_marginBottom="10dp"
+				android:background="@color/medium_gray" />     
+	        <Button
+	            android:id="@+id/btn_pay"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/pay_button"
+	            android:gravity="center|center_vertical"
+	            android:onClick="OnClickChoosePaymentMethod"
+	            android:text="PAY"
+	            android:textSize="20sp" />
+	    </LinearLayout>
+    </LinearLayout>
+    
 </RelativeLayout>

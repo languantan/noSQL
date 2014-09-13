@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#000"
+    android:layout_height="100dp"
+    android:background="@color/light_gray"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
@@ -14,7 +14,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@drawable/sprite_big" />
+        android:src="@drawable/sprite_big"
+        android:contentDescription="Product image" />
     
     <TextView
         android:id="@+id/item_name"
