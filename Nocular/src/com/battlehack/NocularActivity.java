@@ -18,6 +18,8 @@ import com.battlehack.util.CartDBOpenHelper;
 import com.battlehack.util.PaymentHelper;
 import com.battlehack.util.SystemUiHider;
 import com.braintreepayments.api.dropin.BraintreePaymentActivity;
+import com.braintreepayments.api.dropin.Customization;
+import com.braintreepayments.api.dropin.Customization.CustomizationBuilder;
 import com.mirasense.scanditsdk.ScanditSDKAutoAdjustingBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDK;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
@@ -52,11 +54,19 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	}
 	
 	public void OnPaymentButtonClick(View v) {
-        Intent intent = new Intent(this, BraintreePaymentActivity.class);
-        intent.putExtra(BraintreePaymentActivity.EXTRA_CLIENT_TOKEN, PaymentHelper.clientToken);
+        Customization cus = new CustomizationBuilder()
+        .primaryDescription("XYZ Mart")
+        .secondaryDescription("Extra information about the transaction")
+        .amount("$0.00")
+        .submitButtonText("Confirm Purchase")
+        .build();
+
+		Intent intent = new Intent(this, BraintreePaymentActivity.class);
+        intent.putExtra(BraintreePaymentActivity.EXTRA_CLIENT_TOKEN, PaymentHelper.clientToken);        
+        intent.putExtra(BraintreePaymentActivity.EXTRA_CUSTOMIZATION, cus);
         startActivityForResult(intent, PaymentHelper.REQUEST_CODE);
 	}
-
+	
 	@Override
 	protected void onPause() {
 		// When the activity is in the background immediately stop the
