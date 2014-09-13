@@ -38,6 +38,27 @@ public class Product {
 			this.price = 1.00;
 			this.image = R.drawable.rootbeer_big;
 			break;
+		case "955619002739":
+			this.name = "Ribena Blackcurrant Fruit Drink";
+			this.description = "Everyone loves the delicious taste of Ribena Blackcurrant Fruit Drink! It is made with pure New Zealand blackcurrant juice, which is a naturally rich source of vitamin C. It has no artificial colors, flavors, or sweeteners. It is also Halal certified.";
+			this.price = 0.70;
+			this.image = R.drawable.ribena_small;
+		case "8888002076009":
+			this.name = "Coca-Cola";
+			this.description = "Enjoy the classic taste of Coke. Enjoyed over a billion times everyday!";
+			this.price = 0.90;
+			this.image = R.drawable.coke_small;
+		case "8888589338835":
+			this.name = "Jia Jia Heritage Herbal Tea";
+			this.description = "Brewed from 11 all natural herbs; cooling with a sweet, soothing taste; no preservatives";
+			this.price = 0.70;
+			this.image = R.drawable.jiajia_small;
+		case "8888200700294":
+			this.name = "F&N Seasons Ice Lemon Tea";
+			this.description = "F&N Seasons Ice Lemon Tea is a perennial classic that never fails to please. Brewed from real tea leaves with a squeeze of lemon for that authentic, homemade taste that is so refreshing, especially on hot summer days. With no preservatives.";
+			this.price = 0.80;
+			this.image = R.drawable.lemontea_small;
+
 		default:
 			this.name = "Unrecognized Product";
 			this.description = "This product has not been registered on our system.";
