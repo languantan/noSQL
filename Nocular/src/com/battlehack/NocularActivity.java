@@ -108,7 +108,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	public void OnClickChoosePaymentMethod(View v) {
 		Intent intent = new Intent(this, PaymentMethodPageActivity.class);
 		intent.putExtra("STORE", STORE_NAME);
-		intent.putExtra("TOTAL", 12.25);
+		intent.putExtra("TOTAL", getTotalPrice());
 		startActivity(intent);
 	}
 
@@ -227,7 +227,19 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		mBarcodePicker.stopScanning();
 		finish();
 	}
-
+	
+	private double getTotalPrice() {
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		mDbCursor = db.rawQuery("SELECT SUM("+CartDBOpenHelper.ITEM_PRICE+") AS Total"
+				+ " FROM " + CartDBOpenHelper.CART_TABLE_NAME
+				, null);
+		if(mDbCursor.moveToFirst()) {
+			return mDbCursor.getDouble(mDbCursor.getColumnIndex("Total"));
+		} else {
+			return -1;
+		}
+	}
+	
 	private void updateListView() {
 		SQLiteDatabase db = mHelper.getReadableDatabase();
 		mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "+ CartDBOpenHelper.PRODUCT_QUANTITY
@@ -236,7 +248,15 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				+ " GROUP BY " + CartDBOpenHelper.PRODUCT_NAME
 				+ " ORDER BY " + CartDBOpenHelper.TIMESTAMP + " DESC"
 				, null);
-
+//
+//		mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "+ CartDBOpenHelper.PRODUCT_QUANTITY
+//				+ " SUM("+CartDBOpenHelper.ITEM_PRICE+") AS Subtotal"
+//				+ ", MAX(" + CartDBOpenHelper.TIMESTAMP + ")"
+//				+ " FROM " + CartDBOpenHelper.CART_TABLE_NAME
+//				+ " GROUP BY " + CartDBOpenHelper.PRODUCT_NAME
+//				+ " ORDER BY " + CartDBOpenHelper.TIMESTAMP + " DESC"
+//				, null);
+		
 		startManagingCursor(mDbCursor);
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 		final CursorAdapter mAdapter = new ShoppingListCursorAdapter(this, mDbCursor);
