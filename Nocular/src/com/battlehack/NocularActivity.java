@@ -263,6 +263,8 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// , null);
 
 		startManagingCursor(mDbCursor);
+		
+		
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 
 		final CursorAdapter mAdapter = new ShoppingListCursorAdapter(this,
@@ -303,6 +305,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// ListView scrolling,
 		// we don't look for swipes.
 		shoppingList.setOnScrollListener(touchListener.makeScrollListener());
+		((TextView) findViewById(R.id.total_price_text)).setText(getString(R.string.format_price, getTotalPrice()));
 	}
 
 	private void addToCart(String barcode) {
