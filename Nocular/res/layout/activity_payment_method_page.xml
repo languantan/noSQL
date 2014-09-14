@@ -17,7 +17,7 @@
 	    android:contentDescription="Thank you icon"
         android:src="@drawable/acknowledgement_page" 
 	    />
-    
+
     <TextView
         android:id="@+id/tv_pay_thanks"
         android:layout_width="wrap_content"
