@@ -17,5 +17,6 @@ Contributors:
 * [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel) 
 
 ### How-to
-1. Import Libraries above.
-2. Sign up for a ScanditSDK Key
+1. Import Libraries above to your project
+2. Sign up for a ScanditSDK Key and include in NocularActivity
+3. Run it!
