@@ -121,21 +121,19 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// When the activity is in the background immediately stop the
 		// scanning to save resources and free the camera.
 		mBarcodePicker.stopScanning();
-		stopManagingCursor(mDbCursor);
 		mDbCursor = null;
+		Log.d("NocularAct", "dbcursor is null");
 		super.onPause();
-	}
-	
-	@Override
-	protected void onStop() {
-		mDbCursor = null;
-		super.onStop();
 	}
 
 	@Override
 	protected void onResume() {
 		// Once the activity is in the foreground again, restart scanning.
 		mBarcodePicker.startScanning();
+		if (mDbCursor==null){
+			Log.d("NocularAct", "updating list view");
+			updateListView();
+		}
 		super.onResume();
 	}
 
@@ -179,9 +177,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		
 		productHeight = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 120, metrics);
-
-		
-		updateListView();
 	}
 
 	public void didScanBarcode(String barcode, String symbology) {
@@ -259,17 +254,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 				+ CartDBOpenHelper.CART_TABLE_NAME + " GROUP BY "
 				+ CartDBOpenHelper.PRODUCT_NAME + " ORDER BY "
 				+ CartDBOpenHelper.TIMESTAMP + " DESC", null);
-		//
-		// mDbCursor = db.rawQuery("SELECT *, COUNT(*) AS "+
-		// CartDBOpenHelper.PRODUCT_QUANTITY
-		// + " SUM("+CartDBOpenHelper.ITEM_PRICE+") AS Subtotal"
-		// + ", MAX(" + CartDBOpenHelper.TIMESTAMP + ")"
-		// + " FROM " + CartDBOpenHelper.CART_TABLE_NAME
-		// + " GROUP BY " + CartDBOpenHelper.PRODUCT_NAME
-		// + " ORDER BY " + CartDBOpenHelper.TIMESTAMP + " DESC"
-		// , null);
-
-		startManagingCursor(mDbCursor);
 		
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 
@@ -384,72 +368,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 						"You are currently in: " + result, Toast.LENGTH_SHORT)
 						.show();
 			}
-		}
-	}
-
-	private class CursorWithDelete extends AbstractCursor {
-
-		private Cursor cursor;
-		private int posToIgnore;
-
-		public CursorWithDelete(Cursor cursor, int posToRemove) {
-			this.cursor = cursor;
-			this.posToIgnore = posToRemove;
-		}
-
-		@Override
-		public boolean onMove(int oldPosition, int newPosition) {
-			if (newPosition < posToIgnore) {
-				cursor.moveToPosition(newPosition);
-			} else {
-				cursor.moveToPosition(newPosition + 1);
-			}
-			return true;
-		}
-
-		@Override
-		public int getCount() {
-			return cursor.getCount() - 1;
-		}
-
-		@Override
-		public long getLong(int column) {
-			return 0;
-		}
-
-		@Override
-		public String[] getColumnNames() {
-			return cursor.getColumnNames();
-		}
-
-		@Override
-		public String getString(int column) {
-			return cursor.getString(column);
-		}
-
-		@Override
-		public short getShort(int column) {
-			return cursor.getShort(column);
-		}
-
-		@Override
-		public int getInt(int column) {
-			return cursor.getInt(column);
-		}
-
-		@Override
-		public float getFloat(int column) {
-			return cursor.getFloat(column);
-		}
-
-		@Override
-		public double getDouble(int column) {
-			return cursor.getDouble(column);
-		}
-
-		@Override
-		public boolean isNull(int column) {
-			return cursor.isNull(column);
 		}
 	}
 }

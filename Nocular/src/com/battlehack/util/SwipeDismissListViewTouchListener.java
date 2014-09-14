@@ -9,7 +9,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -140,9 +139,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 			if (mPaused) {
 				return false;
 			}
-
-			// TODO: ensure this is a finger, and set a flag
-
+			
 			// Find the child view that was touched (perform a hit test)
 			Rect rect = new Rect();
 			int childCount = mListView.getChildCount();
