@@ -1,7 +1,7 @@
 noSQL
 =====
 
-[noQLiao](http://noqliao.herokuapp.com/)
+[Read More about us here](http://noqliao.herokuapp.com/)
 
 
 a product of BattleHack2014
