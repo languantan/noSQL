@@ -66,7 +66,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 	private Cursor mDbCursor;
 	private CartDBOpenHelper mHelper;
 
-	private String MyScanditSdkAppKey = "LtvvEDljEeSA45lnMKZSeyWIOk73l0WRPd5GKOUHg3M";
+	private String MyScanditSdkAppKey = "YOUR SCANDIT APP KEY HERE";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
