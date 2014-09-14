@@ -29,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.battlehack.cart.Product;
@@ -163,12 +164,16 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		setContentView(mMainLayout);
 		panelExpandedHeight = findViewById(R.id.sliding_panel)
 				.getLayoutParams().height;
-		labelHeight = findViewById(R.id.cart_label).getLayoutParams().height;
-		mMainLayout.setPanelHeight(labelHeight);
-
+		
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		labelHeight = (int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 91, metrics);
+		mMainLayout.setPanelHeight(labelHeight);
+		
 		productHeight = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 120, metrics);
+
+		
 		updateListView();
 	}
 
@@ -287,12 +292,9 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 							mDbCursor.moveToPosition(singlePosition);
 							removeItem(mDbCursor.getString(mDbCursor
 									.getColumnIndex(CartDBOpenHelper.PRODUCT_NAME)));
-
 						}
 						
-						mDbCursor = new CursorWithDelete(mDbCursor,
-								singlePosition);
-						mAdapter.swapCursor(mDbCursor);
+						updateListView();
 
 					}
 				});

@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -16,6 +17,9 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.battlehack.R;
 
 public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 
@@ -64,7 +68,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 		 *            An array of positions to dismiss, sorted in descending
 		 *            order for convenience.
 		 */
-		void onDismiss(ListView listView, int[] reverseSortedPositions, boolean dismissRight);
+		void onDismiss(ListView listView, int[] reverseSortedPositions,
+				boolean dismissRight);
 	}
 
 	/**
@@ -201,7 +206,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 			float absVelocityX = Math.abs(velocityX);
 			float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
 			boolean dismiss = false;
-			
+
 			if (Math.abs(deltaX) > mViewWidth / 2 && mSwiping) {
 				dismiss = true;
 				dismissRight = deltaX > 0;
@@ -218,15 +223,47 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 													// animation ends
 				final int downPosition = mDownPosition;
 				++mDismissAnimationRefCount;
-				mDownView.animate()
-						.translationX(dismissRight ? mViewWidth : -mViewWidth)
-						.alpha(0).setDuration(mAnimationTime)
+				if (!dismissRight) {
+					mDownView
+							.animate()
+							.translationX(
+									dismissRight ? mViewWidth : -mViewWidth)
+							.alpha(0).setDuration(mAnimationTime)
+							.setListener(new AnimatorListenerAdapter() {
+								@Override
+								public void onAnimationEnd(Animator animation) {
+									performDismiss(downView, downPosition);
+								}
+							});
+				} else {
+					TextView txtQuantity = (TextView) mDownView
+							.findViewById(R.id.item_qty);
+					int quantity = Integer.parseInt(txtQuantity.getText()
+							.toString());
+
+					if (quantity - 1 > 0) {
+
+						mDownView.animate().translationX(0).alpha(1)
+								.setDuration(mAnimationTime)
+								.setListener(new AnimatorListenerAdapter() {
+									@Override
+									public void onAnimationEnd(
+											Animator animation) {
+										performDismiss(downView, downPosition);
+									}
+								});
+					} else {
+						mDownView.animate().translationX(mViewWidth).alpha(0)
+						.setDuration(mAnimationTime)
 						.setListener(new AnimatorListenerAdapter() {
 							@Override
-							public void onAnimationEnd(Animator animation) {
+							public void onAnimationEnd(
+									Animator animation) {
 								performDismiss(downView, downPosition);
 							}
 						});
+					}
+				}
 			} else {
 				// cancel
 				mDownView.animate().translationX(0).alpha(1)
@@ -305,8 +342,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 		final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
 		final int originalHeight = dismissView.getHeight();
 
-		ValueAnimator animator = ValueAnimator.ofInt(originalHeight, 1)
-				.setDuration(mAnimationTime);
+		ValueAnimator animator = ValueAnimator.ofInt(originalHeight,
+				dismissRight ? originalHeight : 1).setDuration(mAnimationTime);
 
 		animator.addListener(new AnimatorListenerAdapter() {
 			@Override
@@ -321,7 +358,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 					for (int i = mPendingDismisses.size() - 1; i >= 0; i--) {
 						dismissPositions[i] = mPendingDismisses.get(i).position;
 					}
-					mCallbacks.onDismiss(mListView, dismissPositions, dismissRight);
+					mCallbacks.onDismiss(mListView, dismissPositions,
+							dismissRight);
 
 					// Reset mDownPosition to avoid MotionEvent.ACTION_UP trying
 					// to start a dismiss
