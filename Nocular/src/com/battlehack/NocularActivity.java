@@ -122,6 +122,7 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// scanning to save resources and free the camera.
 		mBarcodePicker.stopScanning();
 		stopManagingCursor(mDbCursor);
+		mDbCursor = null;
 		super.onPause();
 	}
 
@@ -263,7 +264,6 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// , null);
 
 		startManagingCursor(mDbCursor);
-		
 		
 		ListView shoppingList = (ListView) findViewById(R.id.shopping_list);
 
