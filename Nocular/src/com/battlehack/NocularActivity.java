@@ -122,8 +122,14 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 		// scanning to save resources and free the camera.
 		mBarcodePicker.stopScanning();
 		stopManagingCursor(mDbCursor);
-		//mDbCursor = null;
+		mDbCursor = null;
 		super.onPause();
+	}
+	
+	@Override
+	protected void onStop() {
+		mDbCursor = null;
+		super.onStop();
 	}
 
 	@Override
@@ -233,11 +239,11 @@ public class NocularActivity extends Activity implements ScanditSDKListener {
 
 	private double getTotalPrice() {
 		SQLiteDatabase db = mHelper.getReadableDatabase();
-		mDbCursor = db.rawQuery("SELECT SUM(" + CartDBOpenHelper.ITEM_PRICE
+		Cursor c = db.rawQuery("SELECT SUM(" + CartDBOpenHelper.ITEM_PRICE
 				+ ") AS Total" + " FROM " + CartDBOpenHelper.CART_TABLE_NAME,
 				null);
-		if (mDbCursor.moveToFirst()) {
-			return mDbCursor.getDouble(mDbCursor.getColumnIndex("Total"));
+		if (c.moveToFirst()) {
+			return c.getDouble(c.getColumnIndex("Total"));
 		} else {
 			return -1;
 		}
