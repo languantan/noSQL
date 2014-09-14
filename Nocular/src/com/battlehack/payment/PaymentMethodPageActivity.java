@@ -79,7 +79,7 @@ public class PaymentMethodPageActivity extends Activity {
 		Intent intent = new Intent(this, PaymentActivity.class);
 		intent.putExtra(PaymentActivity.EXTRA_PAYMENT, txn);
 		startActivityForResult(intent, REQUEST_CODE);
-		Log.d("PageActivity", "sentRequest"+REQUEST_CODE);
+		
 	}
 
 	private PayPalPayment getTransactionDetails(String paymentIntent,
@@ -88,14 +88,6 @@ public class PaymentMethodPageActivity extends Activity {
 				paymentIntent);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Log.d("PageActivity", "hello");
-		if (!txnComplete) {
-			finish();
-		}
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -107,8 +99,6 @@ public class PaymentMethodPageActivity extends Activity {
 					try {
 						String tmp = confirm.getPayment().toJSONObject()
 								.toString(4);
-						Toast.makeText(this, tmp,
-								Toast.LENGTH_LONG).show();
 						txnComplete = true;
 						CartDBOpenHelper dbHelper = new CartDBOpenHelper(this);
 						SQLiteDatabase db = dbHelper.getWritableDatabase();
